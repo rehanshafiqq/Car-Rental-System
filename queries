@@ -1,0 +1,57 @@
+#Retrieve rental records along with customer details:
+SELECT R.RentalID, R.RentalStartDate, R.RentalEndDate, R.TotalRentalCost, C.FirstName, C.LastName, C.Email, C.PhoneNumber
+FROM RentalRecords R
+JOIN Customers C ON R.CustomerID = C.CustomerID;
+ 
+#Calculate the total revenue generated from rentals:
+SELECT SUM(TotalRentalCost) AS TotalRevenue
+FROM RentalRecords;
+ 
+#Retrieve employees with their roles and salaries:
+SELECT E.FirstName, E.LastName, ER.RoleName, ER.Salary
+FROM Employees E
+JOIN EmployeeRoles ER ON E.RoleID = ER.RoleID;
+ 
+#Retrieve the average payment amount made per month:
+SELECT EXTRACT(MONTH FROM PaymentDate) AS Month, AVG(AmountPaid) AS AvgPaymentAmount
+FROM Payments
+GROUP BY EXTRACT(MONTH FROM PaymentDate);
+ 
+#Retrieve the top 5 car types with the highest daily rates:
+SELECT TypeName, DailyRate
+FROM CarTypes
+ORDER BY DailyRate DESC
+LIMIT 5;
+ 
+#Retrieve the employee who made the highest payment:
+SELECT E.FirstName, E.LastName, P.AmountPaid
+FROM Employees E
+JOIN Payments P ON E.EmployeeID = P.PaymentID
+ORDER BY P.AmountPaid DESC
+LIMIT 1;
+ 
+#Retrieve the number of reservations made by each customer:
+SELECT C.FirstName, C.LastName, COUNT(*) AS TotalReservations
+FROM Customers C
+JOIN Reservations R ON C.CustomerID = R.CustomerID
+GROUP BY C.FirstName, C.LastName;
+ 
+#Retrieve the average rental rate per day for each car make:
+SELECT Make, AVG(RentalRatePerDay) AS AvgRentalRate
+FROM Cars
+GROUP BY Make;
+ 
+#Retrieve the cars that are currently available for rent:
+SELECT * 
+FROM Cars
+WHERE AvailabilityStatus = 'Available';
+ 
+#Retrieve the payments made using a specific payment method:
+SELECT *
+FROM Payments
+WHERE PaymentMethod = 'Credit Card';
+ 
+#Retrieve the details of a specific car type:
+SELECT *
+FROM CarTypes
+WHERE TypeName = 'Sedan';
